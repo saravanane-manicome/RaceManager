@@ -6,6 +6,9 @@ import io.smanicome.racemanager.repository.JpaRaceEntity;
 import io.smanicome.racemanager.repository.JpaRunnerEntity;
 import io.smanicome.racemanager.repository.RaceRepository;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 public class PersistingRaceDao implements RaceDao {
     private final RaceRepository raceRepository;
 
@@ -17,6 +20,11 @@ public class PersistingRaceDao implements RaceDao {
     public Race save(Race raceEntity) {
         final var jpaRaceEntity = raceRepository.save(raceToJpaRaceEntity(raceEntity));
         return jpaRaceEntityToRace(jpaRaceEntity);
+    }
+
+    @Override
+    public Optional<Race> findRaceByDateAndNumber(LocalDateTime date, int number) {
+        return raceRepository.findRaceByDateAndNumber(date, number).map(this::jpaRaceEntityToRace);
     }
 
     private JpaRaceEntity raceToJpaRaceEntity(Race raceEntity) {
