@@ -69,7 +69,7 @@ public class JpaRunnerEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JpaRunnerEntity that = (JpaRunnerEntity) o;
-        return number == that.number && Objects.equals(id, that.id) && name.equals(that.name) && race.equals(that.race);
+        return number == that.number && Objects.equals(id, that.id) && name.equals(that.name) && Objects.equals(race, that.race);
     }
 
     @Override
