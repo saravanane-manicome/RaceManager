@@ -1,5 +1,7 @@
 package io.smanicome.racemanager.dao;
 
+import io.smanicome.racemanager.core.Race;
+import io.smanicome.racemanager.core.Runner;
 import io.smanicome.racemanager.repository.JpaRaceEntity;
 import io.smanicome.racemanager.repository.JpaRunnerEntity;
 import io.smanicome.racemanager.repository.RaceRepository;
@@ -35,11 +37,11 @@ class PersistingRaceDaoShould {
         final var runnerId3 = UUID.randomUUID();
 
         final var runnerEntitiesToSave = List.of(
-            new RunnerEntity(null, "runner1", 1),
-            new RunnerEntity(null, "runner2", 2),
-            new RunnerEntity(null, "runner3", 3)
+            new Runner(null, "runner1", 1),
+            new Runner(null, "runner2", 2),
+            new Runner(null, "runner3", 3)
         );
-        final var raceEntityToSave = new RaceEntity(null, LocalDateTime.now(), 0, runnerEntitiesToSave);
+        final var raceEntityToSave = new Race(null, LocalDateTime.now(), 0, runnerEntitiesToSave);
 
         final var jpaRunnerEntities = List.of(
                 new JpaRunnerEntity(runnerId1, "runner1", 1, null),
@@ -53,11 +55,11 @@ class PersistingRaceDaoShould {
         final var savedRaceEntity = persistingRaceDao.save(raceEntityToSave);
 
         final var expectedRunnerEntities = List.of(
-                new RunnerEntity(runnerId1, "runner1", 1),
-                new RunnerEntity(runnerId2, "runner2", 2),
-                new RunnerEntity(runnerId3, "runner3", 3)
+                new Runner(runnerId1, "runner1", 1),
+                new Runner(runnerId2, "runner2", 2),
+                new Runner(runnerId3, "runner3", 3)
         );
-        final var expectedRaceEntity = new RaceEntity(raceId, raceEntityToSave.date(), 0, expectedRunnerEntities);
+        final var expectedRaceEntity = new Race(raceId, raceEntityToSave.date(), 0, expectedRunnerEntities);
         assertEquals(expectedRaceEntity, savedRaceEntity);
 
         final var jpaRunnerEntitiesToSave = List.of(

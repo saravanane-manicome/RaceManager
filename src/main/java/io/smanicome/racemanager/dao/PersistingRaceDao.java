@@ -1,5 +1,7 @@
 package io.smanicome.racemanager.dao;
 
+import io.smanicome.racemanager.core.Race;
+import io.smanicome.racemanager.core.Runner;
 import io.smanicome.racemanager.repository.JpaRaceEntity;
 import io.smanicome.racemanager.repository.JpaRunnerEntity;
 import io.smanicome.racemanager.repository.RaceRepository;
@@ -12,37 +14,37 @@ public class PersistingRaceDao implements RaceDao {
     }
 
     @Override
-    public RaceEntity save(RaceEntity raceEntity) {
-        final var jpaRaceEntity = raceRepository.save(raceEntityToJpaRaceEntity(raceEntity));
-        return jpaRaceEntityToRaceEntity(jpaRaceEntity);
+    public Race save(Race raceEntity) {
+        final var jpaRaceEntity = raceRepository.save(raceToJpaRaceEntity(raceEntity));
+        return jpaRaceEntityToRace(jpaRaceEntity);
     }
 
-    private JpaRaceEntity raceEntityToJpaRaceEntity(RaceEntity raceEntity) {
+    private JpaRaceEntity raceToJpaRaceEntity(Race raceEntity) {
         final var jpaRaceEntity = new JpaRaceEntity();
         jpaRaceEntity.setDate(raceEntity.date());
         jpaRaceEntity.setNumber(raceEntity.number());
 
         final var jpaRunnerEntities = raceEntity.runners().stream()
-            .map(this::runnerEntityToJpaRunnerEntity)
+            .map(this::runnerToJpaRunnerEntity)
             .toList();
 
         jpaRaceEntity.setRunners(jpaRunnerEntities);
         return jpaRaceEntity;
     }
 
-    private JpaRunnerEntity runnerEntityToJpaRunnerEntity(RunnerEntity runnerEntity) {
+    private JpaRunnerEntity runnerToJpaRunnerEntity(Runner runnerEntity) {
         final var jpaRunnerEntity = new JpaRunnerEntity();
         jpaRunnerEntity.setName(runnerEntity.name());
         jpaRunnerEntity.setNumber(runnerEntity.number());
         return jpaRunnerEntity;
     }
 
-    private RaceEntity jpaRaceEntityToRaceEntity(JpaRaceEntity jpaRaceEntity) {
+    private Race jpaRaceEntityToRace(JpaRaceEntity jpaRaceEntity) {
         final var runnerEntities = jpaRaceEntity.getRunners().stream()
             .map(this::jpaRunnerEntityToRunnerEntity)
             .toList();
 
-        return new RaceEntity(
+        return new Race(
             jpaRaceEntity.getId(),
             jpaRaceEntity.getDate(),
             jpaRaceEntity.getNumber(),
@@ -50,7 +52,7 @@ public class PersistingRaceDao implements RaceDao {
         );
     }
 
-    private RunnerEntity jpaRunnerEntityToRunnerEntity(JpaRunnerEntity jpaRunnerEntity) {
-        return new RunnerEntity(jpaRunnerEntity.getId(), jpaRunnerEntity.getName(), jpaRunnerEntity.getNumber());
+    private Runner jpaRunnerEntityToRunnerEntity(JpaRunnerEntity jpaRunnerEntity) {
+        return new Runner(jpaRunnerEntity.getId(), jpaRunnerEntity.getName(), jpaRunnerEntity.getNumber());
     }
 }
