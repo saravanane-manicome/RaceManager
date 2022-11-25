@@ -5,7 +5,9 @@ import io.smanicome.racemanager.core.Runner;
 import io.smanicome.racemanager.dao.RaceDao;
 import io.smanicome.racemanager.exceptions.RaceNumberAlreadyUsedForRequestedDateException;
 import io.smanicome.racemanager.exceptions.RunnerNumberBreakingSequenceException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PublishingRaceManagerService implements RaceManagerService {
     private final RaceDao raceDao;
 

@@ -5,10 +5,12 @@ import io.smanicome.racemanager.core.Runner;
 import io.smanicome.racemanager.repository.JpaRaceEntity;
 import io.smanicome.racemanager.repository.JpaRunnerEntity;
 import io.smanicome.racemanager.repository.RaceRepository;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+@Component
 public class PersistingRaceDao implements RaceDao {
     private final RaceRepository raceRepository;
 
