@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,7 +42,7 @@ class PersistingRaceDaoShould {
             new Runner(null, "runner2", 2),
             new Runner(null, "runner3", 3)
         );
-        final var raceEntityToSave = new Race(null, LocalDateTime.now(), 0, runnersToSave);
+        final var raceEntityToSave = new Race(null, LocalDate.now(), 0, runnersToSave);
 
         final var jpaRunnerEntities = List.of(
                 new JpaRunnerEntity(runnerId1, "runner1", 1, null),
@@ -80,7 +80,7 @@ class PersistingRaceDaoShould {
         final var runnerId2 = UUID.randomUUID();
         final var runnerId3 = UUID.randomUUID();
 
-        final var date = LocalDateTime.now();
+        final LocalDate date = LocalDate.now();
         final var number = 0;
         final var runners = List.of(
                 new Runner(runnerId1, "runner1", 1),

@@ -16,7 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +43,7 @@ class RaceControllerShould {
     @Test
     void createTodo() throws Exception {
         final var raceId = UUID.randomUUID();
-        final var raceDate = LocalDateTime.now();
+        final var raceDate = LocalDate.now();
         final var raceNumber = 1;
 
         final var runnerId1 = UUID.randomUUID();
@@ -130,7 +130,7 @@ class RaceControllerShould {
                 new RunnerCreationRequest("runner 2", 2),
                 new RunnerCreationRequest("runner 3", 3)
         );
-        final var raceRequest = new RaceCreationRequest(LocalDateTime.now(), raceNumber, runnerRequests);
+        final var raceRequest = new RaceCreationRequest(LocalDate.now(), raceNumber, runnerRequests);
 
         mockMvc.perform(post("/races")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -145,7 +145,7 @@ class RaceControllerShould {
     @DisplayName("return bad request if no runners are sent")
     @Test
     void returnBadRequestIfNoRunnersAreSent() throws Exception {
-        final var raceRequest = new RaceCreationRequest(LocalDateTime.now(), 1, null);
+        final var raceRequest = new RaceCreationRequest(LocalDate.now(), 1, null);
 
         mockMvc.perform(post("/races")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -164,7 +164,7 @@ class RaceControllerShould {
                 new RunnerCreationRequest("runner 1", 1),
                 new RunnerCreationRequest("runner 2", 2)
         );
-        final var raceRequest = new RaceCreationRequest(LocalDateTime.now(), 1, runnerRequests);
+        final var raceRequest = new RaceCreationRequest(LocalDate.now(), 1, runnerRequests);
 
         mockMvc.perform(post("/races")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -190,7 +190,7 @@ class RaceControllerShould {
                 new RunnerCreationRequest("runner 2", 2),
                 new RunnerCreationRequest(runnerName, 3)
         );
-        final var raceRequest = new RaceCreationRequest(LocalDateTime.now(), 1, runnerRequests);
+        final var raceRequest = new RaceCreationRequest(LocalDate.now(), 1, runnerRequests);
 
         mockMvc.perform(post("/races")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -211,7 +211,7 @@ class RaceControllerShould {
                 new RunnerCreationRequest("runner 2", 2),
                 new RunnerCreationRequest("runner 3", raceNumber)
         );
-        final var raceRequest = new RaceCreationRequest(LocalDateTime.now(), 1, runnerRequests);
+        final var raceRequest = new RaceCreationRequest(LocalDate.now(), 1, runnerRequests);
 
         mockMvc.perform(post("/races")
                         .contentType(MediaType.APPLICATION_JSON)

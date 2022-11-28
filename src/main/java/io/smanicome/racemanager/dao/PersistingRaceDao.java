@@ -7,7 +7,7 @@ import io.smanicome.racemanager.repository.JpaRunnerEntity;
 import io.smanicome.racemanager.repository.RaceRepository;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Component
@@ -25,7 +25,7 @@ public class PersistingRaceDao implements RaceDao {
     }
 
     @Override
-    public Optional<Race> findRaceByDateAndNumber(LocalDateTime date, int number) {
+    public Optional<Race> findRaceByDateAndNumber(LocalDate date, int number) {
         return raceRepository.findRaceByDateAndNumber(date, number).map(this::jpaRaceEntityToRace);
     }
 

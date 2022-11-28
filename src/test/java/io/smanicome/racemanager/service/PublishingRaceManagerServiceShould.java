@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +36,7 @@ class PublishingRaceManagerServiceShould {
         final var runnerId2 = UUID.randomUUID();
         final var runnerId3 = UUID.randomUUID();
 
-        final var date = LocalDateTime.now();
+        final var date = LocalDate.now();
         final var number = 0;
         final var runnersToSave = List.of(
                 new Runner(null, "runner 1", 1),
@@ -71,7 +71,7 @@ class PublishingRaceManagerServiceShould {
                 new Runner(null, "runner 2", 2),
                 new Runner(null, "runner 4", 4)
         );
-        final var raceToSave = new Race(null, LocalDateTime.now(), 0, runnersToSave);
+        final var raceToSave = new Race(null, LocalDate.now(), 0, runnersToSave);
 
         assertThrows(RunnerNumberBreakingSequenceException.class, () -> publishingRaceManagerService.createRace(raceToSave));
 
@@ -81,7 +81,7 @@ class PublishingRaceManagerServiceShould {
     @Test
     @DisplayName("throw if runner numbers are not sequential")
     void throwIfRaceNumberIsAlreadyUsedForRequestedDate() {
-        final var date = LocalDateTime.now();
+        final var date = LocalDate.now();
         final var number = 0;
 
         final var runnersToSave = List.of(

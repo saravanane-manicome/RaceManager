@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class JpaRaceEntity {
     @GeneratedValue
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID id;
-    private LocalDateTime date;
+    private LocalDate date;
     private int number;
     @OneToMany
     @Cascade(CascadeType.ALL)
@@ -31,7 +32,7 @@ public class JpaRaceEntity {
     }
 
     @PersistenceCreator
-    public JpaRaceEntity(UUID id, LocalDateTime date, int number, List<JpaRunnerEntity> runners) {
+    public JpaRaceEntity(UUID id, LocalDate date, int number, List<JpaRunnerEntity> runners) {
         this.id = id;
         this.date = date;
         this.number = number;
@@ -46,11 +47,11 @@ public class JpaRaceEntity {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
