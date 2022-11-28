@@ -1,5 +1,7 @@
 package io.smanicome.racemanager.repository;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.PersistenceCreator;
 
@@ -21,6 +23,7 @@ public class JpaRaceEntity {
     private LocalDateTime date;
     private int number;
     @OneToMany
+    @Cascade(CascadeType.ALL)
     private List<JpaRunnerEntity> runners;
 
     public JpaRaceEntity() {
