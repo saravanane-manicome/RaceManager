@@ -5,6 +5,7 @@ import io.smanicome.racemanager.core.Runner;
 import io.smanicome.racemanager.dao.RaceDao;
 import io.smanicome.racemanager.exceptions.RaceNumberAlreadyUsedForRequestedDateException;
 import io.smanicome.racemanager.exceptions.RunnerNumberBreakingSequenceException;
+import io.smanicome.racemanager.messaging.RacePublisher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,9 @@ import static org.mockito.Mockito.*;
 class PublishingRaceManagerServiceShould {
     @Mock
     private RaceDao raceDao;
+
+    @Mock
+    private RacePublisher racePublisher;
 
     @InjectMocks
     private PublishingRaceManagerService publishingRaceManagerService;
@@ -58,9 +62,11 @@ class PublishingRaceManagerServiceShould {
 
         assertEquals(expectedRace, result);
 
-        verify(raceDao).findRaceByDateAndNumber(date, number);
-        verify(raceDao).save(raceToSave);
-        verifyNoMoreInteractions(raceDao);
+        final var orderVerifier = inOrder(raceDao, racePublisher);
+        orderVerifier.verify(raceDao).findRaceByDateAndNumber(date, number);
+        orderVerifier.verify(raceDao).save(raceToSave);
+        orderVerifier.verify(racePublisher).publishCreation(expectedRace);
+        orderVerifier.verifyNoMoreInteractions();
     }
 
     @Test

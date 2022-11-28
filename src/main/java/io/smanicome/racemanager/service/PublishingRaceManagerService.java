@@ -5,14 +5,16 @@ import io.smanicome.racemanager.core.Runner;
 import io.smanicome.racemanager.dao.RaceDao;
 import io.smanicome.racemanager.exceptions.RaceNumberAlreadyUsedForRequestedDateException;
 import io.smanicome.racemanager.exceptions.RunnerNumberBreakingSequenceException;
-import org.springframework.stereotype.Service;
+import io.smanicome.racemanager.messaging.RacePublisher;
 
-@Service
 public class PublishingRaceManagerService implements RaceManagerService {
     private final RaceDao raceDao;
 
-    public PublishingRaceManagerService(RaceDao raceDao) {
+    private final RacePublisher racePublisher;
+
+    public PublishingRaceManagerService(RaceDao raceDao, RacePublisher racePublisher) {
         this.raceDao = raceDao;
+        this.racePublisher = racePublisher;
     }
 
     @Override
@@ -20,7 +22,11 @@ public class PublishingRaceManagerService implements RaceManagerService {
         assertThatRunnerNumbersAreSequential(race);
         assertThatRaceNumberIsNotUsedForRequestedDate(race);
 
-        return raceDao.save(race);
+        final var savedRace = raceDao.save(race);
+
+        racePublisher.publishCreation(savedRace);
+
+        return savedRace;
     }
 
     private void assertThatRaceNumberIsNotUsedForRequestedDate(Race race) throws RaceNumberAlreadyUsedForRequestedDateException {
