@@ -8,6 +8,6 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
-public record RaceCreationRequest(@NotBlank String name, @NotNull LocalDate date, @Min(1) int number, @NotNull @Size(min = 3)
-                                List<@Valid RunnerCreationRequest> runners) {
+public record RaceCreationRequest(@NotBlank String name, @NotNull LocalDate date, @Min(1) int number,
+                                  @NotNull @Size(min = 3) List<@Valid RunnerCreationRequest> runners) {
 }

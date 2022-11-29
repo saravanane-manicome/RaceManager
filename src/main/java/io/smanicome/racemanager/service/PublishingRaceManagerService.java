@@ -19,8 +19,8 @@ public class PublishingRaceManagerService implements RaceManagerService {
 
     @Override
     public Race createRace(Race race) throws RaceNumberAlreadyUsedForRequestedDateException, RunnerNumberBreakingSequenceException {
-        assertThatRunnerNumbersAreSequential(race);
-        assertThatRaceNumberIsNotUsedForRequestedDate(race);
+        guardAgainstBrokenSequence(race);
+        guardAgainstDuplicatedRace(race);
 
         final var savedRace = raceDao.save(race);
 
@@ -29,21 +29,21 @@ public class PublishingRaceManagerService implements RaceManagerService {
         return savedRace;
     }
 
-    private void assertThatRaceNumberIsNotUsedForRequestedDate(Race race) throws RaceNumberAlreadyUsedForRequestedDateException {
+    private void guardAgainstDuplicatedRace(Race race) throws RaceNumberAlreadyUsedForRequestedDateException {
         final var raceWithSameDateAndNumber = raceDao.findRaceByDateAndNumber(race.date(), race.number());
         if(raceWithSameDateAndNumber.isPresent()) {
             throw new RaceNumberAlreadyUsedForRequestedDateException();
         }
     }
 
-    private void assertThatRunnerNumbersAreSequential(Race race) throws RunnerNumberBreakingSequenceException {
+    private void guardAgainstBrokenSequence(Race race) throws RunnerNumberBreakingSequenceException {
         final var runnerNumbers = race.runners().stream()
                 .map(Runner::number)
                 .sorted()
                 .toList();
 
-        for (int i = 0; i < runnerNumbers.size(); i++) {
-            if(i+1 != runnerNumbers.get(i)) {
+        for (int index = 0; index < runnerNumbers.size(); index++) {
+            if(index+1 != runnerNumbers.get(index)) {
                 throw new RunnerNumberBreakingSequenceException();
             }
         }
