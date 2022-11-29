@@ -31,6 +31,7 @@ public class PersistingRaceDao implements RaceDao {
 
     private JpaRaceEntity raceToJpaRaceEntity(Race raceEntity) {
         final var jpaRaceEntity = new JpaRaceEntity();
+        jpaRaceEntity.setName(raceEntity.name());
         jpaRaceEntity.setDate(raceEntity.date());
         jpaRaceEntity.setNumber(raceEntity.number());
 
@@ -56,6 +57,7 @@ public class PersistingRaceDao implements RaceDao {
 
         return new Race(
             jpaRaceEntity.getId(),
+            jpaRaceEntity.getName(),
             jpaRaceEntity.getDate(),
             jpaRaceEntity.getNumber(),
             runnerEntities

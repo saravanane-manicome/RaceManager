@@ -36,7 +36,7 @@ public class RaceController {
                         createRunnerRequest.number()
                 ))
                 .toList();
-        return new Race(null, raceCreationRequest.date(), raceCreationRequest.number(), runners);
+        return new Race(null, raceCreationRequest.name(), raceCreationRequest.date(), raceCreationRequest.number(), runners);
     }
 
     private RaceResponse raceToRaceResponse(Race race) {
@@ -49,6 +49,6 @@ public class RaceController {
                 )
             )
             .toList();
-        return new RaceResponse(race.id(), race.date(), race.number(), runners);
+        return new RaceResponse(race.id(), race.name(), race.date(), race.number(), runners);
     }
 }

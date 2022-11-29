@@ -36,25 +36,33 @@ class PublishingRaceManagerServiceShould {
     @DisplayName("create a race")
     void createRace() throws RunnerNumberBreakingSequenceException, RaceNumberAlreadyUsedForRequestedDateException {
         final var raceId = UUID.randomUUID();
+        final var raceName = "race";
+        final var raceNumber = 0;
+        final var raceDate = LocalDate.now();
+
         final var runnerId1 = UUID.randomUUID();
         final var runnerId2 = UUID.randomUUID();
         final var runnerId3 = UUID.randomUUID();
+        final var runnerName1 = "runner 1";
+        final var runnerName2 = "runner 2";
+        final var runnerName3 = "runner 3";
+        final var runnerNumber1 = 1;
+        final var runnerNumber2 = 2;
+        final var runnerNumber3 = 3;
 
-        final var date = LocalDate.now();
-        final var number = 0;
         final var runnersToSave = List.of(
-                new Runner(null, "runner 1", 1),
-                new Runner(null, "runner 2", 2),
-                new Runner(null, "runner 3", 3)
+                new Runner(null, runnerName1, runnerNumber1),
+                new Runner(null, runnerName2, runnerNumber2),
+                new Runner(null, runnerName3, runnerNumber3)
         );
-        final var raceToSave = new Race(null, date, number, runnersToSave);
+        final var raceToSave = new Race(null, raceName, raceDate, raceNumber, runnersToSave);
 
         final var expectedRunners = List.of(
-                new Runner(runnerId1, "runner 1", 1),
-                new Runner(runnerId2, "runner 2", 2),
-                new Runner(runnerId3, "runner 3", 3)
+                new Runner(runnerId1, runnerName1, runnerNumber1),
+                new Runner(runnerId2, runnerName2, runnerNumber2),
+                new Runner(runnerId3, runnerName3, runnerNumber3)
         );
-        final var expectedRace = new Race(raceId, date, number, expectedRunners);
+        final var expectedRace = new Race(raceId, raceName, raceDate, raceNumber, expectedRunners);
 
         when(raceDao.save(any())).thenReturn(expectedRace);
 
@@ -63,7 +71,7 @@ class PublishingRaceManagerServiceShould {
         assertEquals(expectedRace, result);
 
         final var orderVerifier = inOrder(raceDao, racePublisher);
-        orderVerifier.verify(raceDao).findRaceByDateAndNumber(date, number);
+        orderVerifier.verify(raceDao).findRaceByDateAndNumber(raceDate, raceNumber);
         orderVerifier.verify(raceDao).save(raceToSave);
         orderVerifier.verify(racePublisher).publishCreation(expectedRace);
         orderVerifier.verifyNoMoreInteractions();
@@ -77,7 +85,7 @@ class PublishingRaceManagerServiceShould {
                 new Runner(null, "runner 2", 2),
                 new Runner(null, "runner 4", 4)
         );
-        final var raceToSave = new Race(null, LocalDate.now(), 0, runnersToSave);
+        final var raceToSave = new Race(null, "race", LocalDate.now(), 0, runnersToSave);
 
         assertThrows(RunnerNumberBreakingSequenceException.class, () -> publishingRaceManagerService.createRace(raceToSave));
 
@@ -95,7 +103,7 @@ class PublishingRaceManagerServiceShould {
                 new Runner(null, "runner 2", 2),
                 new Runner(null, "runner 3", 3)
         );
-        final var raceToSave = new Race(null, date, number, runnersToSave);
+        final var raceToSave = new Race(null, "race", date, number, runnersToSave);
 
         when(raceDao.findRaceByDateAndNumber(any(), anyInt())).thenReturn(Optional.of(raceToSave));
 
